@@ -35,7 +35,7 @@
 | updated_at | datetime | NO | | Rails自動生成 |
 
 **インデックス**
-- `login_id`（UNIQUE）
+- `login_id`(UNIQUE)
 
 **備考**
 - `admin`は品目マスタの追加・編集・削除、生産記録の削除が可能。ログイン機能を使用する
