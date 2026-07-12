@@ -4,7 +4,7 @@
 <img src="img/work-flow.png" width="600">
 
 ## 1. 画面遷移図
-<img src="img/screen-transition.png" width="600">
+<img src="img/screen-transition-diagram.png" width="600">
 
 ## 3. ワイヤーフレーム
 <img src="img/wire-frame.png" width="600">
