@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_12_161904) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_26_085356) do
   create_table "materials", force: :cascade do |t|
     t.string "name"
     t.integer "display_order"
@@ -35,12 +35,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_12_161904) do
   end
 
   create_table "staffs", force: :cascade do |t|
-    t.string "login_id"
+    t.string "username"
     t.string "name"
     t.string "role"
-    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
   end
 
   add_foreign_key "production_records", "materials"
