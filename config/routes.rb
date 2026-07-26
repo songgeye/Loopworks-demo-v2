@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  get "materials/index"
-  get "materials/new"
-  get "materials/show"
-  get "materials/edit"
+  # ログイン・ログアウト
+  devise_for :staffs, path: '', path_names: {
+    sign_in: 'login',
+    sign_out: 'logout'
+  }
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -15,11 +17,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'dashboard#index'
-
-  # ログイン・ログアウト
-  get    'login',  to: 'sessions#new'
-  post   'login',  to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy'
 
   resources :materials
 end
