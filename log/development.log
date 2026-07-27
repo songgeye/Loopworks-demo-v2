@@ -816,3 +816,346 @@ Processing by DashboardController#index as TURBO_STREAM
 Completed 200 OK in 4ms (Views: 1.3ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.8ms)
 
 
+Started GET "/" for 127.0.0.1 at 2026-07-27 01:24:56 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DashboardController#index as HTML
+  [1m[36mStaff Load (0.4ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering dashboard/index.html.erb within layouts/application
+  Rendered dashboard/index.html.erb within layouts/application (Duration: 1.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 51.5ms | GC: 1.1ms)
+Completed 200 OK in 107ms (Views: 54.8ms | ActiveRecord: 4.2ms (1 query, 0 cached) | GC: 19.1ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2026-07-27 01:24:58 +0900
+Processing by Rails::PwaController#manifest as JSON
+  Rendering pwa/manifest.json.erb
+  Rendered pwa/manifest.json.erb (Duration: 1.2ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:09 +0900
+Processing by MaterialsController#index as HTML
+  [1m[36mStaff Load (0.3ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.1ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 5.1ms | ActiveRecord: 0.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2026-07-27 01:25:09 +0900
+Processing by Rails::PwaController#manifest as JSON
+  Rendering pwa/manifest.json.erb
+  Rendered pwa/manifest.json.erb (Duration: 0.1ms | GC: 0.0ms)
+Completed 200 OK in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials/new" for 127.0.0.1 at 2026-07-27 01:25:19 +0900
+Processing by MaterialsController#new as HTML
+  [1m[36mStaff Load (0.2ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/new.html.erb within layouts/application
+  Rendered materials/new.html.erb within layouts/application (Duration: 24.4ms | GC: 17.9ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.5ms | GC: 17.9ms)
+Completed 200 OK in 40ms (Views: 26.0ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 17.9ms)
+
+
+Started POST "/materials" for 127.0.0.1 at 2026-07-27 01:25:31 +0900
+Processing by MaterialsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "material"=>{"name"=>"プラスチック", "display_order"=>"1"}, "commit"=>"登録する"}
+  [1m[36mStaff Load (0.2ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:12:in `create'
+  [1m[36mMaterial Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "materials" WHERE "materials"."name" = ? AND "materials"."deleted_at" IS NULL LIMIT ?[0m  [["name", "プラスチック"], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:12:in `create'
+  [1m[36mMaterial Create (1.1ms)[0m  [1m[32mINSERT INTO "materials" ("name", "display_order", "deleted_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "プラスチック"], ["display_order", 1], ["deleted_at", nil], ["created_at", "2026-07-26 16:25:31.432459"], ["updated_at", "2026-07-26 16:25:31.432459"]]
+  ↳ app/controllers/materials_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:12:in `create'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 11ms (ActiveRecord: 2.1ms (3 queries, 0 cached) | GC: 1.2ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:31 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.6ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/materials/1/edit" for 127.0.0.1 at 2026-07-27 01:25:35 +0900
+Processing by MaterialsController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:24:in `edit'
+  Rendering layout layouts/application.html.erb
+  Rendering materials/edit.html.erb within layouts/application
+  Rendered materials/edit.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | GC: 0.0ms)
+Completed 200 OK in 7ms (Views: 2.4ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:40 +0900
+Processing by MaterialsController#index as HTML
+  [1m[36mStaff Load (0.2ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 5.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.4ms | GC: 0.0ms)
+Completed 200 OK in 19ms (Views: 8.0ms | ActiveRecord: 0.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started PATCH "/materials/1" for 127.0.0.1 at 2026-07-27 01:25:40 +0900
+Processing by MaterialsController#update as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "material"=>{"name"=>"プラスチック2", "display_order"=>"1"}, "commit"=>"更新する", "id"=>"1"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:28:in `update'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:29:in `update'
+  [1m[36mMaterial Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "materials" WHERE "materials"."name" = ? AND "materials"."deleted_at" IS NULL AND "materials"."id" != ? LIMIT ?[0m  [["name", "プラスチック2"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:29:in `update'
+  [1m[36mMaterial Update (0.1ms)[0m  [1m[33mUPDATE "materials" SET "name" = ?, "updated_at" = ? WHERE "materials"."id" = ?[0m  [["name", "プラスチック2"], ["updated_at", "2026-07-26 16:25:40.479315"], ["id", 1]]
+  ↳ app/controllers/materials_controller.rb:29:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:29:in `update'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 11ms (ActiveRecord: 1.4ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:40 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.3ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials/1" for 127.0.0.1 at 2026-07-27 01:25:45 +0900
+Processing by MaterialsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mStaff Load (0.3ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:20:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering materials/show.html.erb within layouts/application
+  Rendered materials/show.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.0ms | GC: 0.0ms)
+Completed 200 OK in 13ms (Views: 3.5ms | ActiveRecord: 0.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials/1" for 127.0.0.1 at 2026-07-27 01:25:45 +0900
+Processing by MaterialsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:20:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering materials/show.html.erb within layouts/application
+  Rendered materials/show.html.erb within layouts/application (Duration: 0.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 23.8ms | GC: 20.9ms)
+Completed 200 OK in 26ms (Views: 24.1ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 20.9ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:48 +0900
+Processing by MaterialsController#index as HTML
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.7ms | GC: 0.9ms)
+Completed 200 OK in 5ms (Views: 2.9ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.9ms)
+
+
+Started DELETE "/materials/1" for 127.0.0.1 at 2026-07-27 01:25:51 +0900
+Processing by MaterialsController#destroy as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "id"=>"1"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:37:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:38:in `destroy'
+  [1m[36mMaterial Update (0.7ms)[0m  [1m[33mUPDATE "materials" SET "deleted_at" = ?, "updated_at" = ? WHERE "materials"."id" = ?[0m  [["deleted_at", "2026-07-26 16:25:51.884916"], ["updated_at", "2026-07-26 16:25:51.884927"], ["id", 1]]
+  ↳ app/controllers/materials_controller.rb:38:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:38:in `destroy'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 7ms (ActiveRecord: 1.0ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-27 01:25:51 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-28 02:23:15 +0900
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by MaterialsController#index as HTML
+  [1m[36mStaff Load (0.2ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 2.1ms | GC: 0.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 48.9ms | GC: 0.6ms)
+Completed 200 OK in 116ms (Views: 54.3ms | ActiveRecord: 3.0ms (2 queries, 0 cached) | GC: 16.4ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2026-07-28 02:23:17 +0900
+Processing by Rails::PwaController#manifest as JSON
+  Rendering pwa/manifest.json.erb
+  Rendered pwa/manifest.json.erb (Duration: 1.1ms | GC: 0.0ms)
+Completed 200 OK in 8ms (Views: 6.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials/new" for 127.0.0.1 at 2026-07-28 02:23:31 +0900
+Processing by MaterialsController#new as HTML
+  [1m[36mStaff Load (0.5ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/new.html.erb within layouts/application
+  Rendered materials/new.html.erb within layouts/application (Duration: 7.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.4ms | GC: 0.0ms)
+Completed 200 OK in 27ms (Views: 10.0ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials/new" for 127.0.0.1 at 2026-07-28 02:23:51 +0900
+Processing by MaterialsController#new as HTML
+  [1m[36mStaff Load (0.6ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/new.html.erb within layouts/application
+  Rendered materials/new.html.erb within layouts/application (Duration: 3.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 11.6ms | GC: 0.0ms)
+Completed 200 OK in 27ms (Views: 13.0ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/materials" for 127.0.0.1 at 2026-07-28 02:23:59 +0900
+Processing by MaterialsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "material"=>{"name"=>"鉄", "display_order"=>"2"}, "commit"=>"登録する"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mMaterial Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "materials" WHERE "materials"."name" = ? AND "materials"."deleted_at" IS NULL LIMIT ?[0m  [["name", "鉄"], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mMaterial Create (0.8ms)[0m  [1m[32mINSERT INTO "materials" ("name", "display_order", "deleted_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "鉄"], ["display_order", 2], ["deleted_at", nil], ["created_at", "2026-07-27 17:24:00.044873"], ["updated_at", "2026-07-27 17:24:00.044873"]]
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 8ms (ActiveRecord: 1.7ms (3 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-28 02:24:00 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 1.7ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/materials/2" for 127.0.0.1 at 2026-07-28 02:24:02 +0900
+Processing by MaterialsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mStaff Load (0.3ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.5ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:46:in `set_material'
+  Rendering layout layouts/application.html.erb
+  Rendering materials/show.html.erb within layouts/application
+  Rendered materials/show.html.erb within layouts/application (Duration: 0.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.1ms | GC: 0.0ms)
+Completed 200 OK in 22ms (Views: 9.6ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 1.8ms)
+
+
+Started GET "/materials/new" for 127.0.0.1 at 2026-07-28 02:24:02 +0900
+Processing by MaterialsController#new as HTML
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/new.html.erb within layouts/application
+  Rendered materials/new.html.erb within layouts/application (Duration: 2.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.6ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 3.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started POST "/materials" for 127.0.0.1 at 2026-07-28 02:24:08 +0900
+Processing by MaterialsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "material"=>{"name"=>"プラスチック", "display_order"=>"1"}, "commit"=>"登録する"}
+  [1m[36mStaff Load (0.2ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mMaterial Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "materials" WHERE "materials"."name" = ? AND "materials"."deleted_at" IS NULL LIMIT ?[0m  [["name", "プラスチック"], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mMaterial Create (0.3ms)[0m  [1m[32mINSERT INTO "materials" ("name", "display_order", "deleted_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "プラスチック"], ["display_order", 1], ["deleted_at", nil], ["created_at", "2026-07-27 17:24:08.342178"], ["updated_at", "2026-07-27 17:24:08.342178"]]
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:15:in `create'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 12ms (ActiveRecord: 1.3ms (3 queries, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-28 02:24:08 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.1ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 4.7ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/materials/2" for 127.0.0.1 at 2026-07-28 02:24:16 +0900
+Processing by MaterialsController#destroy as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "id"=>"2"}
+  [1m[36mStaff Load (0.1ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL AND "materials"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/materials_controller.rb:46:in `set_material'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/materials_controller.rb:39:in `destroy'
+  [1m[36mMaterial Update (0.3ms)[0m  [1m[33mUPDATE "materials" SET "deleted_at" = ?, "updated_at" = ? WHERE "materials"."id" = ?[0m  [["deleted_at", "2026-07-27 17:24:16.318275"], ["updated_at", "2026-07-27 17:24:16.318281"], ["id", 2]]
+  ↳ app/controllers/materials_controller.rb:39:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/materials_controller.rb:39:in `destroy'
+Redirected to http://127.0.0.1:3000/materials
+Completed 302 Found in 6ms (ActiveRecord: 0.6ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/materials" for 127.0.0.1 at 2026-07-28 02:24:16 +0900
+Processing by MaterialsController#index as TURBO_STREAM
+  [1m[36mStaff Load (0.0ms)[0m  [1m[34mSELECT "staffs".* FROM "staffs" WHERE "staffs"."id" = ? ORDER BY "staffs"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering materials/index.html.erb within layouts/application
+  [1m[36mMaterial Load (0.0ms)[0m  [1m[34mSELECT "materials".* FROM "materials" WHERE "materials"."deleted_at" IS NULL[0m
+  ↳ app/views/materials/index.html.erb:17
+  Rendered materials/index.html.erb within layouts/application (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 1.6ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
