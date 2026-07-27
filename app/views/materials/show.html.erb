@@ -1,2 +1,10 @@
 <h1>Materials#show</h1>
 <p>Find me in app/views/materials/show.html.erb</p>
+
+<h1>品目詳細</h1>
+
+<p>品目名：<%= @material.name %></p>
+<p>表示順：<%= @material.display_order %></p>
+
+<%= link_to '編集', edit_material_path(@material) %>
+<%= link_to '一覧に戻る', materials_path %>

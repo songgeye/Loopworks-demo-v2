@@ -1,2 +1,29 @@
 <h1>Materials#index</h1>
 <p>Find me in app/views/materials/index.html.erb</p>
+
+<h1>品目マスタ</h1>
+
+<%= link_to '新規登録', new_material_path %>
+
+<table>
+  <thead>
+  <tr>
+    <th>品目名</th>
+    <th>表示順</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @materials.each do |material| %>
+    <tr>
+      <td><%= material.name %></td>
+      <td><%= material.display_order %></td>
+      <td>
+        <%= link_to '詳細', material_path(material) %>
+        <%= link_to '編集', edit_material_path(material) %>
+        <%= button_to '削除', material_path(material), method: :delete, data: { turbo_confirm: '削除しますか？' } %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

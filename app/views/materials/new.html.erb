@@ -1,2 +1,28 @@
 <h1>Materials#new</h1>
 <p>Find me in app/views/materials/new.html.erb</p>
+
+<h1>品目登録</h1>
+
+<%= form_with model: @material do |f| %>
+  <% if @material.errors.any? %>
+    <ul>
+      <% @material.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= f.label :name, '品目名' %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :display_order, '表示順' %>
+    <%= f.number_field :display_order %>
+  </div>
+
+  <%= f.submit '登録する' %>
+<% end %>
+
+<%= link_to '一覧に戻る', materials_path %>
