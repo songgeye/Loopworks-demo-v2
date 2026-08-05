@@ -1,0 +1,33 @@
+<h1>生産記録</h1>
+
+<%= link_to '生産記録', new_production_record_path %>
+
+<table>
+  <thead>
+  <tr>
+    <th>記録日時</th>
+    <th>品目</th>
+    <th>重量(kg)</th>
+    <th>作成者</th>
+    <th>備考</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @production_records.each do |record| %>
+    <tr>
+      <td><%= record.recorded_at %></td>
+      <td><%= record.material.name %></td>
+      <td><%= record.weight_kg %></td>
+      <td><%= record.staff.name %></td>
+      <td><%= record.note %></td>
+      <td>
+        <%= link_to '詳細', material_path(record) %>
+        <%= link_to '編集', edit_material_path(record) %>
+        <%= button_to '削除', material_path(record), method: :delete, data: { turbo_confirm: '削除しますか？' } %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+

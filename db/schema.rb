@@ -12,36 +12,43 @@
 
 ActiveRecord::Schema[7.2].define(version: 2026_07_26_085356) do
   create_table "materials", force: :cascade do |t|
-    t.string "name"
-    t.integer "display_order"
+    t.string "name", null: false
+    t.integer "display_order", null: false
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_materials_on_deleted_at"
   end
 
   create_table "production_records", force: :cascade do |t|
-    t.datetime "recorded_at"
+    t.datetime "recorded_at", null: false
     t.integer "material_id", null: false
-    t.decimal "weight_kg"
+    t.decimal "weight_kg", null: false
     t.integer "staff_id", null: false
-    t.string "status"
+    t.string "status", default: "published", null: false
     t.text "note"
-    t.boolean "flagged_as_anomaly"
+    t.boolean "flagged_as_anomaly", default: false, null: false
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_production_records_on_deleted_at"
     t.index ["material_id"], name: "index_production_records_on_material_id"
+    t.index ["recorded_at"], name: "index_production_records_on_recorded_at"
     t.index ["staff_id"], name: "index_production_records_on_staff_id"
+    t.index ["status"], name: "index_production_records_on_status"
   end
 
   create_table "staffs", force: :cascade do |t|
-    t.string "username"
-    t.string "name"
-    t.string "role"
+    t.string "username", null: false
+    t.string "name", null: false
+    t.string "role", null: false
+    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
+    t.index ["deleted_at"], name: "index_staffs_on_deleted_at"
+    t.index ["username"], name: "index_staffs_on_username", unique: true
   end
 
   add_foreign_key "production_records", "materials"
