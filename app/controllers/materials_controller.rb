@@ -44,6 +44,8 @@ class MaterialsController < ApplicationController
 
   def set_material
     @material = Material.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to materials_path, alert: '品目が見つかりません'
   end
 
   def require_admin

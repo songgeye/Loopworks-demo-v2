@@ -1,0 +1,11 @@
+<h1>生産記録詳細</h1>
+
+<p>記録日時：<%= @production_record.recorded_at %></p>
+<p>品目：<%= @production_record.material.name %></p>
+<p>重量(kg)：<%= @production_record.weight_kg %></p>
+<p>作成者：<%= @production_record.staff.name %></p>
+<p>メモ：<%= @production_record.note %></p>
+<p>ステータス：<%= @production_record.status %></p>
+
+<%= link_to '編集', edit_production_record_path(@production_record) %>
+<%= link_to '一覧に戻る', production_records_path %>

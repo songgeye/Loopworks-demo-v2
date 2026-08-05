@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   root 'dashboard#index'
 
   resources :materials
+  resources :production_records
 end
