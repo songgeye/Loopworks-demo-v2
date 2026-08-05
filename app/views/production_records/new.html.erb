@@ -1,0 +1,40 @@
+<h1>+ 記録</h1>
+
+<%= form_with model: @production_record do |f| %>
+  <% if @production_record.errors.any? %>
+    <ul>
+      <% @production_record.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= f.label :staff_id, '入力者' %>
+    <%= f.collection_select :staff_id, @staffs, :id, :name, { prompt: '選択してください' } %>
+  </div>
+
+  <div>
+    <%= f.label :recorded_at, '記録日時' %>
+    <%= f.datetime_local_field :recorded_at %>
+  </div>
+
+  <div>
+    <%= f.label :material_id, '品目' %>
+    <%= f.collection_select :material_id, @materials, :id, :name, { prompt: '選択してください' } %>
+  </div>
+
+  <div>
+    <%= f.label :weight_kg, '重量(kg)' %>
+    <%= f.number_field :weight_kg, step: 0.1 %>
+  </div>
+
+  <div>
+    <%= f.label :note, 'メモ（任意）' %>
+    <%= f.text_area :note %>
+  </div>
+
+  <%= f.submit '登録する' %>
+<% end %>
+
+<%= link_to '一覧に戻る', production_records_path %>
