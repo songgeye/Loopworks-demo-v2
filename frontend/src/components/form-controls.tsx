@@ -6,15 +6,20 @@ const fieldClass =
 export function Field({
   label,
   hint,
+  labelClassName,
   children,
 }: {
   label: string;
   hint?: string;
+  /** 繰り返し行の2行目以降でラベルだけ隠す、といった調整に使う */
+  labelClassName?: string;
   children: React.ReactNode;
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-sm font-bold text-fg-muted">{label}</span>
+      <span className={`text-sm font-bold text-fg-muted ${labelClassName ?? ""}`}>
+        {label}
+      </span>
       {children}
       {hint ? <span className="text-xs text-fg-faint">{hint}</span> : null}
     </label>
