@@ -140,9 +140,16 @@ export default function NewRecordPage() {
         <SectionCard title="品目と重量">
           <div className="space-y-3">
             {rows.map((row, index) => (
-              <div key={row.key} className="flex items-end gap-3">
-                <div className="flex-1">
-                  <Field label={index === 0 ? "品目" : ""}>
+              // 狭い画面では品目を1行使って表示し、その下に重量と削除ボタンを並べる
+              <div
+                key={row.key}
+                className="grid grid-cols-[1fr_auto] gap-3 sm:flex sm:items-end"
+              >
+                <div className="col-span-2 sm:flex-1">
+                  <Field
+                    label="品目"
+                    labelClassName={index === 0 ? undefined : "sm:invisible"}
+                  >
                     <Select
                       value={row.materialId}
                       onChange={(e) => updateRow(row.key, { materialId: e.target.value })}
@@ -157,8 +164,11 @@ export default function NewRecordPage() {
                     </Select>
                   </Field>
                 </div>
-                <div className="w-32 sm:w-40">
-                  <Field label={index === 0 ? "重量 (kg)" : ""}>
+                <div className="sm:w-40">
+                  <Field
+                    label="重量 (kg)"
+                    labelClassName={index === 0 ? undefined : "sm:invisible"}
+                  >
                     <TextInput
                       type="number"
                       inputMode="decimal"
@@ -177,7 +187,7 @@ export default function NewRecordPage() {
                   onClick={() => setRows((prev) => prev.filter((r) => r.key !== row.key))}
                   disabled={rows.length === 1}
                   aria-label={`${index + 1}行目を削除`}
-                  className="mb-0 flex size-12 shrink-0 items-center justify-center rounded-xl border border-line bg-card-2 text-fg-muted transition-colors hover:border-danger/50 hover:text-danger disabled:opacity-30"
+                  className="flex size-12 shrink-0 self-end items-center justify-center rounded-xl border border-line bg-card-2 text-fg-muted transition-colors hover:border-danger/50 hover:text-danger disabled:opacity-30"
                 >
                   <X size={18} aria-hidden />
                 </button>
