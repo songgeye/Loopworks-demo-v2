@@ -1,0 +1,74 @@
+wb = xlsx_package.workbook
+
+header_style = wb.styles.add_style(b: true, bg_color: "DDDDDD", border: { style: :thin, color: "FF999999" })
+datetime_style = wb.styles.add_style(format_code: "yyyy/mm/dd hh:mm")
+weight_style = wb.styles.add_style(format_code: "#,##0.0")
+total_label_style = wb.styles.add_style(b: true)
+
+# 記録日時は JST（config.time_zone）で明示的に丸めてから渡す。
+# caxlsx は Time#utc_offset を使ってシリアル値を計算するため、
+# ここで in_time_zone しておかないと環境（コンテナの既定TZ）によっては
+# ズレたオフセットを拾ってしまう事故につながる（実装仕様書 v2 §3.3, T1-3参照）。
+records = @records.to_a
+jst_recorded_at = records.map { |r| r.recorded_at.in_time_zone("Tokyo") }
+
+wb.add_worksheet(name: "生産記録") do |sheet|
+  sheet.add_row [ "記録日時", "マテリアル", "作業者", "実測kg" ], style: header_style
+
+  records.each_with_index do |record, i|
+    sheet.add_row(
+      [ jst_recorded_at[i], record.material.name, record.staff.name, record.weight_kg ],
+      types: [ :time, :string, :string, :float ],
+      style: [ datetime_style, nil, nil, weight_style ]
+    )
+  end
+
+  if records.any?
+    last_data_row = records.size + 1
+    sheet.add_row(
+      [ "合計", nil, nil, "=SUM(D2:D#{last_data_row})" ],
+      style: [ total_label_style, nil, nil, weight_style ],
+      escape_formulas: [ false, false, false, false ]
+    )
+    sheet.auto_filter = "A1:D#{last_data_row}"
+  end
+
+  sheet.column_widths 18, 20, 14, 12
+
+  sheet.sheet_view.pane do |pane|
+    pane.state = :frozen
+    pane.y_split = 1
+    pane.top_left_cell = "A2"
+    pane.active_pane = :bottom_left
+  end
+end
+
+material_totals = records
+  .group_by(&:material)
+  .transform_values { |rs| { total_kg: rs.sum(&:weight_kg), count: rs.size } }
+  .sort_by { |material, _| material.display_order }
+
+wb.add_worksheet(name: "品目別集計") do |sheet|
+  sheet.add_row [ "マテリアル", "合計重量kg", "件数" ], style: header_style
+  material_totals.each do |material, totals|
+    sheet.add_row [ material.name, totals[:total_kg], totals[:count] ],
+                  types: [ :string, :float, :integer ],
+                  style: [ nil, weight_style, nil ]
+  end
+  sheet.column_widths 20, 14, 10
+end
+
+staff_totals = records
+  .group_by(&:staff)
+  .transform_values { |rs| { total_kg: rs.sum(&:weight_kg), count: rs.size } }
+  .sort_by { |staff, _| staff.name }
+
+wb.add_worksheet(name: "作業者別集計") do |sheet|
+  sheet.add_row [ "作業者", "合計重量kg", "件数" ], style: header_style
+  staff_totals.each do |staff, totals|
+    sheet.add_row [ staff.name, totals[:total_kg], totals[:count] ],
+                  types: [ :string, :float, :integer ],
+                  style: [ nil, weight_style, nil ]
+  end
+  sheet.column_widths 20, 14, 10
+end

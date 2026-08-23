@@ -35,6 +35,13 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# xlsx export [https://github.com/caxlsx/caxlsx]
+gem "caxlsx"
+gem "caxlsx_rails"
+
+# CORS for the /api namespace (Next.js frontend) [https://github.com/cyu/rack-cors]
+gem "rack-cors"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -55,6 +62,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  # Read generated xlsx files back in tests [https://github.com/roo-rb/roo]
+  gem "roo"
 end
 
 gem "devise", "~> 5.0"
