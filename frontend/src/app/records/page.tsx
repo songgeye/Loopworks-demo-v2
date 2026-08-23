@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { CsvDownloadButton } from "@/components/csv-download-button";
 import { FilterPanel } from "@/components/filter-panel";
 import { Button, Field, Select, TextInput } from "@/components/form-controls";
 import { PageHeader } from "@/components/page-header";
 import { RecordList } from "@/components/record-list";
 import { EmptyState } from "@/components/ui";
+import { XlsxDownloadButton } from "@/components/xlsx-download-button";
 import { getMaterials, getRecords, getStaffs } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
 
@@ -131,7 +131,13 @@ export default async function RecordsPage({
           </span>{" "}
           kg
         </p>
-        <CsvDownloadButton records={records} />
+        <XlsxDownloadButton
+          from={from || undefined}
+          to={to || undefined}
+          materialId={materialId ? Number(materialId) : undefined}
+          staffId={staffId ? Number(staffId) : undefined}
+          disabled={records.length === 0}
+        />
       </div>
 
       <section className="lw-card overflow-hidden">
