@@ -20,4 +20,10 @@ Rails.application.routes.draw do
 
   resources :materials
   resources :production_records
+
+  namespace :api do
+    namespace :v1 do
+      resources :production_records, only: [ :index ]
+    end
+  end
 end

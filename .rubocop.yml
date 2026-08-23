@@ -6,3 +6,8 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
+
+# Time.now / Date.today はコンテナの既定タイムゾーン(UTC)に引きずられるため禁止。
+# 必ず Time.zone.now / Time.zone.today を使う（実装仕様書 v2 §3.3）。
+Rails/TimeZone:
+  Enabled: true
