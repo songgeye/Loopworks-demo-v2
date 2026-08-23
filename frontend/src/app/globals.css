@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  /* ベースカラー：現場でも見やすいハイコントラストなダークテーマ */
+  --color-bg: #070b0a;
+  --color-sidebar: #0b100f;
+  --color-card: #101615;
+  --color-card-2: #151d1b;
+  --color-line: #1c2523;
+  --color-line-soft: #161e1c;
+
+  --color-accent: #63e6a8;
+  --color-accent-soft: #8ff0c3;
+  --color-accent-dim: #2f6b52;
+  --color-ink: #06120d;
+
+  --color-fg: #f2f7f5;
+  --color-fg-muted: #93a49e;
+  --color-fg-faint: #66766f;
+
+  --color-danger: #ff8a80;
+  --color-warn: #ffca6b;
+
+  --radius-card: 20px;
+
+  --font-sans: system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP", "Yu Gothic UI", "Meiryo", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    /* 年齢層が高い利用者を想定し、基準フォントを大きめに取る */
+    font-size: 16px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  /* 数値は桁を揃えて読み違いを防ぐ */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* キーボード操作時のフォーカスを全体で統一する */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .lw-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+
+  /* アクセントカラーの要素はうっすら発光させ、押せる場所を分かりやすくする */
+  .lw-glow {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 25%, transparent),
+      0 8px 30px -10px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+
+}
+
+/* 出荷サマリーを紙に出すときは、用紙部分だけを白地で残す */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  main {
+    max-width: none;
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
