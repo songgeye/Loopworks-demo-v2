@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FileText, Plus } from "lucide-react";
+import { CompanyIntakeCard } from "@/components/company-intake-card";
 import { PageHeader } from "@/components/page-header";
 import { RecordList } from "@/components/record-list";
 import { EmptyState, SectionCard, StatCard } from "@/components/ui";
@@ -76,6 +77,8 @@ export default function HomePage() {
           <EmptyState message="本日の記録はまだありません。" />
         )}
       </SectionCard>
+
+      <CompanyIntakeCard />
     </>
   );
 }

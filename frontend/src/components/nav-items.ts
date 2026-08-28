@@ -4,6 +4,8 @@ import {
   House,
   PackagePlus,
   Settings,
+  Truck,
+  Warehouse,
   type LucideIcon,
 } from "lucide-react";
 
@@ -16,6 +18,8 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { href: "/", label: "ホーム", icon: House },
   { href: "/records", label: "記録", icon: FileText },
+  { href: "/inventory", label: "在庫", icon: Warehouse },
+  { href: "/shipments", label: "出荷", icon: Truck },
   { href: "/summary", label: "集計", icon: ClipboardList },
   { href: "/master", label: "マスタ", icon: PackagePlus },
   { href: "/settings", label: "設定", icon: Settings },

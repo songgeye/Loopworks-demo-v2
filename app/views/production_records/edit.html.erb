@@ -30,6 +30,11 @@
   </div>
 
   <div>
+    <%= f.label :purchase_slip_id, '買取伝票（任意）' %>
+    <%= f.collection_select :purchase_slip_id, @purchase_slips, :id, ->(slip) { "#{slip.slip_no || slip.id} - #{slip.company.name}" }, { include_blank: 'なし' } %>
+  </div>
+
+  <div>
     <%= f.label :note, 'メモ（任意）' %>
     <%= f.text_area :note %>
   </div>
