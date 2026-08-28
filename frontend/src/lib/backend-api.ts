@@ -82,14 +82,6 @@ export async function fetchBuyerCompanies(): Promise<ApiCompany[]> {
   return res.data;
 }
 
-/** 累計受入重量の多い順に並べて返す(ダッシュボードのランキング表示用) */
-export async function fetchSupplierCompaniesByReceivedWeight(): Promise<ApiCompany[]> {
-  const res = await apiFetch<{ data: ApiCompany[]; meta: ApiListMeta }>(
-    "/api/v1/companies?role=supplier",
-  );
-  return [...res.data].sort((a, b) => (b.total_received_kg ?? 0) - (a.total_received_kg ?? 0));
-}
-
 export async function fetchShipments(): Promise<ShipmentSummary[]> {
   const res = await apiFetch<{ data: ShipmentSummary[]; meta: ApiListMeta }>(
     "/api/v1/shipments",

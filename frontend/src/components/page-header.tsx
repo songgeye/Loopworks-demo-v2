@@ -7,9 +7,11 @@ interface PageHeaderProps {
   title: string;
   /** 検索窓を出さない画面ではここに操作ボタンを置く */
   children?: React.ReactNode;
+  /** 記録と無関係な画面（設定・マスタ等）では検索窓の既定表示を止める */
+  hideSearch?: boolean;
 }
 
-export function PageHeader({ label, title, children }: PageHeaderProps) {
+export function PageHeader({ label, title, children, hideSearch }: PageHeaderProps) {
   return (
     <header className="lw-card flex flex-wrap items-center justify-between gap-4 px-6 py-5 sm:px-7">
       <div>
@@ -18,7 +20,7 @@ export function PageHeader({ label, title, children }: PageHeaderProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        {children ?? <SearchBox />}
+        {children ?? (hideSearch ? null : <SearchBox />)}
         <button
           type="button"
           aria-label="お知らせ"

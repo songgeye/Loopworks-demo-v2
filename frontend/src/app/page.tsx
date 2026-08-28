@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { FileText, Plus } from "lucide-react";
-import { CompanyIntakeCard } from "@/components/company-intake-card";
+import { MaterialShareDonut } from "@/components/material-share-donut";
 import { PageHeader } from "@/components/page-header";
 import { RecordList } from "@/components/record-list";
 import { EmptyState, SectionCard, StatCard } from "@/components/ui";
@@ -42,43 +44,47 @@ export default function HomePage() {
         )}
       </SectionCard>
 
-      <SectionCard title="本日の品目別累計" flush>
-        {totals.length > 0 ? (
-          <ul className="border-t border-line-soft">
-            {totals.map((total) => (
-              <li
-                key={total.materialId}
-                className="border-b border-line-soft px-6 py-4 last:border-b-0 sm:px-7"
-              >
-                <div className="flex items-baseline justify-between gap-4">
-                  <p className="truncate text-lg font-bold">{total.materialName}</p>
-                  <p className="shrink-0">
-                    <span className="tnum text-xl font-bold text-accent">
-                      {formatNumber(total.totalKg)}
-                    </span>
-                    <span className="ml-1 text-sm text-fg-muted">kg</span>
-                    <span className="ml-3 text-sm text-fg-faint">{total.count}件</span>
-                  </p>
-                </div>
-                {/* 品目ごとの構成比を横バーで示す */}
-                <div
-                  className="mt-2 h-2 overflow-hidden rounded-full bg-card-2"
-                  role="presentation"
+      <div className="grid gap-4 lg:grid-cols-2">
+        <SectionCard title="本日の品目別累計" flush>
+          {totals.length > 0 ? (
+            <ul className="border-t border-line-soft">
+              {totals.map((total) => (
+                <li
+                  key={total.materialId}
+                  className="border-b border-line-soft px-6 py-4 last:border-b-0 sm:px-7"
                 >
+                  <div className="flex items-baseline justify-between gap-4">
+                    <p className="truncate text-lg font-bold">{total.materialName}</p>
+                    <p className="shrink-0">
+                      <span className="tnum text-xl font-bold text-accent">
+                        {formatNumber(total.totalKg)}
+                      </span>
+                      <span className="ml-1 text-sm text-fg-muted">kg</span>
+                      <span className="ml-3 text-sm text-fg-faint">{total.count}件</span>
+                    </p>
+                  </div>
+                  {/* 品目ごとの構成比を横バーで示す */}
                   <div
-                    className="h-full rounded-full bg-accent"
-                    style={{ width: `${(total.totalKg / maxKg) * 100}%` }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="本日の記録はまだありません。" />
-        )}
-      </SectionCard>
+                    className="mt-2 h-2 overflow-hidden rounded-full bg-card-2"
+                    role="presentation"
+                  >
+                    <div
+                      className="h-full rounded-full bg-accent"
+                      style={{ width: `${(total.totalKg / maxKg) * 100}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState message="本日の記録はまだありません。" />
+          )}
+        </SectionCard>
 
-      <CompanyIntakeCard />
+        <SectionCard title="本日の品目別構成比" centerBody>
+          <MaterialShareDonut totals={totals} />
+        </SectionCard>
+      </div>
     </>
   );
 }

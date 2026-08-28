@@ -7,6 +7,8 @@ import { Button, Field, Select, TextArea, TextInput } from "@/components/form-co
 import { PageHeader } from "@/components/page-header";
 import { SectionCard } from "@/components/ui";
 import {
+  createMockProductionRecord,
+  getCompanies,
   getMaterials,
   getStaffs,
   isAnomalousWeight,
@@ -14,6 +16,7 @@ import {
   TODAY,
 } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
+import type { RecordStatus } from "@/lib/types";
 
 interface EntryRow {
   key: number;
@@ -30,10 +33,12 @@ function emptyRow(): EntryRow {
 export default function NewRecordPage() {
   const materials = useMemo(() => getMaterials(), []);
   const staffs = useMemo(() => getStaffs(), []);
+  const companies = useMemo(() => getCompanies(), []);
 
   const [date, setDate] = useState(TODAY);
   const [time, setTime] = useState("09:00");
   const [staffId, setStaffId] = useState("");
+  const [companyId, setCompanyId] = useState("");
   const [rows, setRows] = useState<EntryRow[]>([emptyRow(), emptyRow()]);
   const [note, setNote] = useState("");
   const [photoName, setPhotoName] = useState<string | null>(null);
@@ -44,27 +49,51 @@ export default function NewRecordPage() {
   const totalKg = filledRows.reduce((sum, row) => sum + Number(row.weight), 0);
   const canSubmit = staffId !== "" && filledRows.length > 0;
 
-  /** 直近平均から大きく外れた行（保存前に確認を促す） */
-  const anomalies = filledRows
-    .filter((row) => isAnomalousWeight(Number(row.materialId), Number(row.weight)))
+  /** 同じ品目の行は重量を合算し、記録としては1件にまとめる */
+  const mergedRows = Array.from(
+    filledRows.reduce((map, row) => {
+      const materialId = Number(row.materialId);
+      map.set(materialId, (map.get(materialId) ?? 0) + Number(row.weight));
+      return map;
+    }, new Map<number, number>()),
+    ([materialId, weight]) => ({ materialId, weight }),
+  );
+
+  /** 直近平均から大きく外れた品目（保存前に確認を促す） */
+  const anomalies = mergedRows
+    .filter((row) => isAnomalousWeight(row.materialId, row.weight))
     .map((row) => ({
-      key: row.key,
-      materialName:
-        materials.find((m) => m.id === Number(row.materialId))?.name ?? "不明な品目",
-      weight: Number(row.weight),
-      average: recentAverageWeight(Number(row.materialId)) ?? 0,
+      materialId: row.materialId,
+      materialName: materials.find((m) => m.id === row.materialId)?.name ?? "不明な品目",
+      weight: row.weight,
+      average: recentAverageWeight(row.materialId) ?? 0,
     }));
 
   const updateRow = (key: number, patch: Partial<EntryRow>) => {
     setRows((prev) => prev.map((row) => (row.key === key ? { ...row, ...patch } : row)));
   };
 
-  const commit = () => {
-    setSaved({ count: filledRows.length, totalKg });
+  const commit = (status: RecordStatus) => {
+    const anomalyMaterialIds = new Set(anomalies.map((a) => a.materialId));
+    for (const row of mergedRows) {
+      createMockProductionRecord({
+        recordedAt: `${date}T${time}:00`,
+        materialId: row.materialId,
+        weightKg: row.weight,
+        staffId: Number(staffId),
+        status,
+        note: note.trim() || null,
+        companyId: companyId ? Number(companyId) : null,
+        flaggedAsAnomaly: anomalyMaterialIds.has(row.materialId),
+      });
+    }
+
+    setSaved({ count: mergedRows.length, totalKg });
     setConfirming(false);
     setRows([emptyRow(), emptyRow()]);
     setNote("");
     setPhotoName(null);
+    setCompanyId("");
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -75,7 +104,7 @@ export default function NewRecordPage() {
       setConfirming(true);
       return;
     }
-    commit();
+    commit("published");
   };
 
   return (
@@ -96,14 +125,14 @@ export default function NewRecordPage() {
             {saved.count}件（合計 {formatNumber(saved.totalKg)}kg）を登録しました。
           </p>
           <span className="text-sm text-fg-faint">
-            ※ API 未接続のため、画面上の確認のみです
+            ※ プロトタイプ表示のため、この登録は同一ブラウザのセッション中のみ反映されます
           </span>
         </div>
       ) : null}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <SectionCard title="記録の基本情報">
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Field label="記録日">
               <TextInput
                 type="date"
@@ -130,6 +159,16 @@ export default function NewRecordPage() {
                 {staffs.map((staff) => (
                   <option key={staff.id} value={staff.id}>
                     {staff.name}
+                  </option>
+                ))}
+              </Select>
+            </Field>
+            <Field label="仕入れ先（任意）" hint="持込元が分かる場合のみ選びます">
+              <Select value={companyId} onChange={(e) => setCompanyId(e.target.value)}>
+                <option value="">選択しない</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
                   </option>
                 ))}
               </Select>
@@ -253,7 +292,7 @@ export default function NewRecordPage() {
             type="button"
             variant="secondary"
             disabled={!canSubmit}
-            onClick={commit}
+            onClick={() => commit("draft")}
             className="h-16 sm:w-48"
           >
             下書き保存
@@ -283,7 +322,7 @@ export default function NewRecordPage() {
             <ul className="mt-4 space-y-2">
               {anomalies.map((anomaly) => (
                 <li
-                  key={anomaly.key}
+                  key={anomaly.materialId}
                   className="rounded-xl border border-line bg-card-2 px-4 py-3"
                 >
                   <p className="font-bold">{anomaly.materialName}</p>
@@ -296,7 +335,7 @@ export default function NewRecordPage() {
             </ul>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row-reverse">
-              <Button type="button" onClick={commit} className="flex-1">
+              <Button type="button" onClick={() => commit("published")} className="flex-1">
                 確認して保存
               </Button>
               <Button

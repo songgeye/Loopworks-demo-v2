@@ -131,11 +131,11 @@ export default function SummaryPage() {
       </SectionCard>
 
       <SectionCard title={`作業者別の実績（${formatMonthLabel(thisMonth)}）`} flush>
-        <ul className="border-t border-line-soft">
+        <ul className="border-t border-line-soft xl:columns-2 xl:gap-x-6">
           {staffTotals.map((total) => (
             <li
               key={total.staffId}
-              className="border-b border-line-soft px-6 py-4 last:border-b-0 sm:px-7"
+              className="border-b border-line-soft px-6 py-4 last:border-b-0 sm:px-7 xl:break-inside-avoid"
             >
               <div className="flex items-baseline justify-between gap-4">
                 <p className="truncate text-lg font-bold">{total.staffName}</p>
