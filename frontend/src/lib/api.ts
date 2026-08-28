@@ -1,4 +1,4 @@
-import { materials, productionRecords, staffs, TODAY } from "./mock-data";
+import { companies, materials, productionRecords, staffs, TODAY } from "./mock-data";
 import { dateOf, monthOf } from "./format";
 import type {
   Material,
@@ -22,6 +22,7 @@ const activeRecords = productionRecords.filter((r) => r.deletedAt === null);
 
 const materialById = new Map(materials.map((m) => [m.id, m]));
 const staffById = new Map(staffs.map((s) => [s.id, s]));
+const companyById = new Map(companies.map((c) => [c.id, c]));
 
 export function getMaterials(): Material[] {
   return [...activeMaterials].sort((a, b) => a.displayOrder - b.displayOrder);
@@ -36,6 +37,10 @@ export function toView(record: ProductionRecord): ProductionRecordView {
     ...record,
     materialName: materialById.get(record.materialId)?.name ?? "（削除済み品目）",
     staffName: staffById.get(record.staffId)?.name ?? "（削除済み作業者）",
+    companyName:
+      record.companyId === null
+        ? null
+        : (companyById.get(record.companyId)?.name ?? "（削除済み取引先）"),
   };
 }
 

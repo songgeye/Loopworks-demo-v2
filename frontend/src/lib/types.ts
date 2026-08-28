@@ -20,6 +20,12 @@ export interface Material {
   deletedAt: string | null;
 }
 
+export interface Company {
+  id: number;
+  name: string;
+  deletedAt: string | null;
+}
+
 export type RecordStatus = "draft" | "published";
 
 export interface ProductionRecord {
@@ -32,13 +38,16 @@ export interface ProductionRecord {
   status: RecordStatus;
   note: string | null;
   flaggedAsAnomaly: boolean;
+  /** 買取伝票経由の持込元。伝票と紐付いていない記録では null */
+  companyId: number | null;
   deletedAt: string | null;
 }
 
-/** 一覧表示用に品目名・作業者名を結合したビューモデル */
+/** 一覧表示用に品目名・作業者名・持込元会社名を結合したビューモデル */
 export interface ProductionRecordView extends ProductionRecord {
   materialName: string;
   staffName: string;
+  companyName: string | null;
 }
 
 /** 品目別の集計行 */

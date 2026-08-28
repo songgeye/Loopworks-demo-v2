@@ -1,4 +1,4 @@
-import type { Material, ProductionRecord, Staff } from "./types";
+import type { Company, Material, ProductionRecord, Staff } from "./types";
 
 /**
  * 開発用のモックデータ。
@@ -27,6 +27,19 @@ export const staffs: Staff[] = [
   { id: 3, username: "tanaka", name: "田中 花子", role: "staff", deletedAt: null },
   { id: 4, username: "suzuki", name: "鈴木 次郎", role: "staff", deletedAt: null },
 ];
+
+export const companies: Company[] = [
+  { id: 1, name: "丸和金属", deletedAt: null },
+  { id: 2, name: "共栄解体工業", deletedAt: null },
+  { id: 3, name: "北関東リサイクル", deletedAt: null },
+  { id: 4, name: "山口商店", deletedAt: null },
+];
+
+/** 買取伝票の持込元を疑似的に割り当てる（5件に1件は伝票なしの持込として null） */
+function companyIdFor(id: number): number | null {
+  if (id % 5 === 0) return null;
+  return companies[id % companies.length].id;
+}
 
 /** [時刻, 品目ID, 作業者ID, 重量kg] */
 type Row = [string, number, number, number];
@@ -115,8 +128,9 @@ function generatePastDay(year: number, month: number, day: number): void {
     const mm = minutes % 60;
     if (hh >= 18) break;
 
+    const id = nextId++;
     records.push({
-      id: nextId++,
+      id,
       recordedAt: `${year}-${pad(month)}-${pad(day)}T${pad(hh)}:${pad(mm)}:00`,
       materialId,
       weightKg: weight,
@@ -124,6 +138,7 @@ function generatePastDay(year: number, month: number, day: number): void {
       status: "published",
       note: null,
       flaggedAsAnomaly: false,
+      companyId: companyIdFor(id),
       deletedAt: null,
     });
   }
@@ -133,22 +148,27 @@ for (let day = 1; day <= 30; day += 1) generatePastDay(2026, 6, day);
 for (let day = 1; day <= 8; day += 1) generatePastDay(2026, 7, day);
 
 // 下書きのまま残っている記録（集計には含めない）
-records.push({
-  id: nextId++,
-  recordedAt: "2026-07-08T16:40:00",
-  materialId: 5,
-  weightKg: 210,
-  staffId: 4,
-  status: "draft",
-  note: "計量器の再校正待ち。値は暫定。",
-  flaggedAsAnomaly: false,
-  deletedAt: null,
-});
+{
+  const id = nextId++;
+  records.push({
+    id,
+    recordedAt: "2026-07-08T16:40:00",
+    materialId: 5,
+    weightKg: 210,
+    staffId: 4,
+    status: "draft",
+    note: "計量器の再校正待ち。値は暫定。",
+    flaggedAsAnomaly: false,
+    companyId: companyIdFor(id),
+    deletedAt: null,
+  });
+}
 
 for (const [time, materialId, staffId, weightKg] of todayRows) {
   const recordedAt = `${TODAY}T${time}:00`;
+  const id = nextId++;
   records.push({
-    id: nextId++,
+    id,
     recordedAt,
     materialId,
     weightKg,
@@ -156,6 +176,7 @@ for (const [time, materialId, staffId, weightKg] of todayRows) {
     status: "published",
     note: anomalyKeys.has(recordedAt) ? "解体現場からの大口搬入。計量2回確認済み。" : null,
     flaggedAsAnomaly: anomalyKeys.has(recordedAt),
+    companyId: companyIdFor(id),
     deletedAt: null,
   });
 }
