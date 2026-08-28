@@ -1,5 +1,7 @@
 /** フォーム部品。現場での誤タップを避けるため、高さ・文字を大きめに揃えている。 */
 
+import { ChevronDown } from "lucide-react";
+
 const fieldClass =
   "h-12 w-full rounded-xl border border-line bg-card-2 px-4 text-base text-fg placeholder:text-fg-faint focus:border-accent/60 focus:outline-none";
 
@@ -30,11 +32,21 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${fieldClass} ${props.className ?? ""}`} />;
 }
 
-export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({
+  className,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
-    <select {...props} className={`${fieldClass} ${props.className ?? ""}`}>
-      {props.children}
-    </select>
+    <div className={`relative ${className ?? ""}`}>
+      <select {...props} className={`${fieldClass} w-full appearance-none pr-10`}>
+        {props.children}
+      </select>
+      <ChevronDown
+        size={18}
+        className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-fg-muted"
+        aria-hidden
+      />
+    </div>
   );
 }
 

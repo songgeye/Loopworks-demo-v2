@@ -17,7 +17,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <PageHeader label="加工記録管理" title="設定" />
+      <PageHeader label="加工記録管理" title="設定" hideSearch />
 
       <SectionCard title="ログイン中のアカウント">
         <div className="flex flex-wrap items-center justify-between gap-4">

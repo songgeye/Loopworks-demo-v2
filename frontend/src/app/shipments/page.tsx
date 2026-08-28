@@ -1,39 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Plus, TriangleAlert } from "lucide-react";
+import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/ui";
-import { ApiError, fetchShipments } from "@/lib/backend-api";
-import type { ShipmentSummary } from "@/lib/backend-types";
+import { getShipments } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
 
-type LoadState =
-  | { status: "loading" }
-  | { status: "error"; message: string }
-  | { status: "ready"; shipments: ShipmentSummary[] };
-
 export default function ShipmentsPage() {
-  const [state, setState] = useState<LoadState>({ status: "loading" });
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchShipments()
-      .then((shipments) => {
-        if (!cancelled) setState({ status: "ready", shipments });
-      })
-      .catch((error: unknown) => {
-        if (cancelled) return;
-        const message = error instanceof ApiError ? error.message : "出荷一覧の取得に失敗しました";
-        setState({ status: "error", message });
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const shipments = getShipments();
 
   return (
     <>
@@ -48,14 +23,7 @@ export default function ShipmentsPage() {
       </PageHeader>
 
       <section className="lw-card overflow-hidden">
-        {state.status === "loading" ? (
-          <EmptyState message="読み込み中..." />
-        ) : state.status === "error" ? (
-          <div className="flex items-center gap-3 px-6 py-8 text-danger sm:px-7">
-            <TriangleAlert size={20} aria-hidden />
-            <p>{state.message}</p>
-          </div>
-        ) : state.shipments.length === 0 ? (
+        {shipments.length === 0 ? (
           <EmptyState message="出荷の記録がありません。" />
         ) : (
           <div className="overflow-x-auto">
@@ -70,30 +38,30 @@ export default function ShipmentsPage() {
                 </tr>
               </thead>
               <tbody>
-                {state.shipments.map((shipment) => (
+                {shipments.map((shipment) => (
                   <tr key={shipment.id} className="border-b border-line-soft last:border-0">
                     <td className="px-6 py-3 align-top sm:px-7">
-                      {new Date(shipment.shipped_at).toLocaleString("ja-JP")}
+                      {new Date(shipment.shippedAt).toLocaleString("ja-JP")}
                     </td>
-                    <td className="px-4 py-3 align-top font-bold">{shipment.company.name}</td>
+                    <td className="px-4 py-3 align-top font-bold">{shipment.companyName}</td>
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-wrap gap-1.5">
                         {shipment.items.map((item) => (
                           <span
-                            key={item.material.id}
+                            key={item.materialId}
                             className="tnum inline-flex items-center gap-1 rounded-full border border-line bg-card-2 px-2.5 py-1 text-xs"
                           >
-                            {item.material.name}
+                            {item.materialName}
                             <span className="font-bold text-accent">
-                              {formatNumber(item.quantity_kg)}kg
+                              {formatNumber(item.quantityKg)}kg
                             </span>
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td className="px-4 py-3 align-top text-fg-muted">{shipment.slip_no ?? "-"}</td>
+                    <td className="px-4 py-3 align-top text-fg-muted">{shipment.slipNo ?? "-"}</td>
                     <td className="tnum px-6 py-3 text-right align-top text-accent sm:px-7">
-                      {formatNumber(shipment.total_quantity_kg)}
+                      {formatNumber(shipment.totalQuantityKg)}
                     </td>
                   </tr>
                 ))}
@@ -102,6 +70,10 @@ export default function ShipmentsPage() {
           </div>
         )}
       </section>
+
+      <p className="px-2 text-sm text-fg-faint">
+        ※ プロトタイプ表示のため、ここでの登録は同一ブラウザのセッション中のみ一覧に反映されます（ページを再読み込みすると初期データに戻ります）。
+      </p>
     </>
   );
 }

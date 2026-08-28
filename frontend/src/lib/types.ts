@@ -20,7 +20,15 @@ export interface Material {
   deletedAt: string | null;
 }
 
+/** 仕入れ先（生産記録の持込元） */
 export interface Company {
+  id: number;
+  name: string;
+  deletedAt: string | null;
+}
+
+/** 売却先（出荷先）。仕入れ先とは別の取引先マスタとして扱う */
+export interface Buyer {
   id: number;
   name: string;
   deletedAt: string | null;
@@ -56,4 +64,51 @@ export interface MaterialTotal {
   materialName: string;
   totalKg: number;
   count: number;
+}
+
+export interface ShipmentItem {
+  materialId: number;
+  quantityKg: number;
+}
+
+export interface Shipment {
+  id: number;
+  /** 売却先（買取先とは別の Buyer マスタを参照） */
+  companyId: number;
+  /** ISO8601（出荷日時） */
+  shippedAt: string;
+  slipNo: string | null;
+  note: string | null;
+  items: ShipmentItem[];
+}
+
+/** 一覧・登録結果表示用に売却先名・品目名を結合したビューモデル */
+export interface ShipmentView {
+  id: number;
+  companyId: number;
+  companyName: string;
+  shippedAt: string;
+  slipNo: string | null;
+  note: string | null;
+  items: { materialId: number; materialName: string; quantityKg: number }[];
+  totalQuantityKg: number;
+}
+
+/** 手動での在庫調整（棚卸差異・ロスなど）。quantityKg は増減どちらもありうる */
+export interface StockAdjustment {
+  id: number;
+  materialId: number;
+  quantityKg: number;
+  note: string | null;
+  /** ISO8601（調整日時） */
+  adjustedAt: string;
+}
+
+/** 品目別の在庫（仕入れ - 出荷 + 手動調整）。マイナスもありうる */
+export interface StockTotal {
+  materialId: number;
+  materialName: string;
+  totalKg: number;
+  count: number;
+  negative: boolean;
 }

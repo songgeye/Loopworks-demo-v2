@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { CsvDownloadButton } from "@/components/csv-download-button";
 import { FilterPanel } from "@/components/filter-panel";
@@ -9,13 +13,7 @@ import { EmptyState } from "@/components/ui";
 import { getMaterials, getRecords, getStaffs } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
 
-type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
 const PER_PAGE = 50;
-
-function single(value: string | string[] | undefined): string {
-  return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
-}
 
 /** 現在の絞り込み条件を保ったままページ番号だけ差し替えたリンクを作る */
 function pageHref(params: Record<string, string>, page: number): string {
@@ -26,17 +24,21 @@ function pageHref(params: Record<string, string>, page: number): string {
   return `/records?${query.toString()}`;
 }
 
-export default async function RecordsPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  const params = await searchParams;
-  const from = single(params.from);
-  const to = single(params.to);
-  const materialId = single(params.materialId);
-  const staffId = single(params.staffId);
-  const keyword = single(params.keyword);
+export default function RecordsPage() {
+  return (
+    <Suspense fallback={<EmptyState message="読み込み中..." />}>
+      <RecordsPageContent />
+    </Suspense>
+  );
+}
+
+function RecordsPageContent() {
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") ?? "";
+  const to = searchParams.get("to") ?? "";
+  const materialId = searchParams.get("materialId") ?? "";
+  const staffId = searchParams.get("staffId") ?? "";
+  const keyword = searchParams.get("keyword") ?? "";
 
   const records = getRecords({
     from: from || undefined,
@@ -51,7 +53,7 @@ export default async function RecordsPage({
   const staffs = getStaffs();
 
   const totalPages = Math.max(1, Math.ceil(records.length / PER_PAGE));
-  const page = Math.min(Math.max(1, Number(single(params.page)) || 1), totalPages);
+  const page = Math.min(Math.max(1, Number(searchParams.get("page")) || 1), totalPages);
   const pageRecords = records.slice((page - 1) * PER_PAGE, page * PER_PAGE);
   const filters = { from, to, materialId, staffId, keyword };
 

@@ -1,4 +1,12 @@
-import type { Company, Material, ProductionRecord, Staff } from "./types";
+import type {
+  Buyer,
+  Company,
+  Material,
+  ProductionRecord,
+  Shipment,
+  Staff,
+  StockAdjustment,
+} from "./types";
 
 /**
  * 開発用のモックデータ。
@@ -28,11 +36,19 @@ export const staffs: Staff[] = [
   { id: 4, username: "suzuki", name: "鈴木 次郎", role: "staff", deletedAt: null },
 ];
 
+/** 仕入れ先（生産記録の持込元） */
 export const companies: Company[] = [
   { id: 1, name: "丸和金属", deletedAt: null },
   { id: 2, name: "共栄解体工業", deletedAt: null },
   { id: 3, name: "北関東リサイクル", deletedAt: null },
   { id: 4, name: "山口商店", deletedAt: null },
+];
+
+/** 売却先（出荷先）。仕入れ先とは別の取引先として管理する */
+export const buyers: Buyer[] = [
+  { id: 1, name: "大東製鋼", deletedAt: null },
+  { id: 2, name: "東海メタルワークス", deletedAt: null },
+  { id: 3, name: "湾岸スチール", deletedAt: null },
 ];
 
 /** 買取伝票の持込元を疑似的に割り当てる（5件に1件は伝票なしの持込として null） */
@@ -182,3 +198,36 @@ for (const [time, materialId, staffId, weightKg] of todayRows) {
 }
 
 export const productionRecords: ProductionRecord[] = records;
+
+/**
+ * 出荷記録。他のモック配列と違い、この配列は実行時に
+ * `api.ts` の `createMockShipment` から push される（画面上の登録操作を反映するため）。
+ * 初期表示が寂しくならないよう、いくつか初期データを入れている。
+ */
+export const shipments: Shipment[] = [
+  {
+    id: 1,
+    companyId: 1,
+    shippedAt: "2026-07-05T10:30:00",
+    slipNo: "S-2607-001",
+    note: null,
+    items: [
+      { materialId: 1, quantityKg: 2400 },
+      { materialId: 2, quantityKg: 1800 },
+    ],
+  },
+  {
+    id: 2,
+    companyId: 2,
+    shippedAt: "2026-07-07T14:00:00",
+    slipNo: "S-2607-002",
+    note: "軽トラ2台に分けて搬出",
+    items: [{ materialId: 4, quantityKg: 950 }],
+  },
+];
+
+/**
+ * 手動の在庫調整（棚卸差異・ロスなど）。shipments と同様、実行時に
+ * `api.ts` の `createMockStockAdjustment` から push される。
+ */
+export const stockAdjustments: StockAdjustment[] = [];

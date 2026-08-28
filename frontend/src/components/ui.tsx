@@ -39,11 +39,13 @@ interface SectionCardProps {
   children: React.ReactNode;
   /** 本文の左右パディングを外す（テーブルや行区切りを端まで引くとき） */
   flush?: boolean;
+  /** 隣のカードに高さを揃えられた際、本文を上下中央に寄せて余白を均等にする */
+  centerBody?: boolean;
 }
 
-export function SectionCard({ title, action, children, flush }: SectionCardProps) {
+export function SectionCard({ title, action, children, flush, centerBody }: SectionCardProps) {
   return (
-    <section className="lw-card overflow-hidden">
+    <section className={`lw-card overflow-hidden ${centerBody ? "flex flex-col" : ""}`}>
       <div className="flex items-center justify-between gap-4 px-6 py-5 sm:px-7">
         <h2 className="text-xl font-bold">{title}</h2>
         {action ? (
@@ -56,7 +58,13 @@ export function SectionCard({ title, action, children, flush }: SectionCardProps
           </Link>
         ) : null}
       </div>
-      <div className={flush ? "" : "px-6 pb-6 sm:px-7"}>{children}</div>
+      <div
+        className={`${flush ? "" : "px-6 pb-6 sm:px-7"} ${
+          centerBody ? "flex flex-1 items-center justify-center" : ""
+        }`}
+      >
+        {children}
+      </div>
     </section>
   );
 }

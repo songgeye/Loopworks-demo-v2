@@ -36,7 +36,7 @@ export default function RootLayout({
               </Link>
             </div>
 
-            <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 p-4 pb-28 lg:py-6 lg:pr-6 lg:pl-2 lg:pb-6">
+            <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 p-4 pb-28 lg:py-6 lg:pr-6 lg:pl-2 lg:pb-6 xl:max-w-6xl 2xl:max-w-7xl">
               {children}
             </main>
           </div>
