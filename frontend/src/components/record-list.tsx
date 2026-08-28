@@ -39,7 +39,16 @@ export function RecordList({ records }: { records: ProductionRecordView[] }) {
                 ) : null}
                 {record.status === "draft" ? <Badge>下書き</Badge> : null}
               </p>
-              <p className="truncate text-sm text-fg-muted">{record.staffName}</p>
+              <p className="truncate text-sm text-fg-muted">
+                {record.companyName ? (
+                  <>
+                    {record.companyName}
+                    <span className="ml-2 text-xs text-fg-faint">{record.staffName}</span>
+                  </>
+                ) : (
+                  <span className="text-xs text-fg-faint">{record.staffName}</span>
+                )}
+              </p>
             </div>
 
             <p className="shrink-0 text-right">
