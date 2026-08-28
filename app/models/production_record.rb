@@ -1,6 +1,7 @@
 class ProductionRecord < ApplicationRecord
   belongs_to :material
   belongs_to :staff
+  belongs_to :purchase_slip, optional: true
   acts_as_paranoid
   before_validation :set_default_status
 

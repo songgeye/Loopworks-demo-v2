@@ -24,6 +24,19 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :production_records, only: [ :index ]
+      resources :materials, only: [ :index ]
+      resources :companies, only: [ :index ] do
+        member do
+          get :variances
+        end
+      end
+      resources :purchase_slips, only: [ :index, :show, :create, :update ]
+      resources :shipments, only: [ :index, :show, :create, :update, :destroy ]
+
+      get "inventories", to: "inventories#index"
+      get "inventories/:material_id/movements", to: "inventories#movements"
+
+      get "csrf", to: "csrf#show"
     end
   end
 end

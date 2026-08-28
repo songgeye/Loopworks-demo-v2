@@ -1,0 +1,2 @@
+# 差分アラートの閾値(%)。既定 3.0（実装仕様書 v2 §T3-4）。
+VARIANCE_ALERT_THRESHOLD_PERCENT = ENV.fetch("VARIANCE_ALERT_THRESHOLD_PERCENT", "3.0").to_f
