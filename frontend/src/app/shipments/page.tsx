@@ -27,7 +27,7 @@ export default function ShipmentsPage() {
           <EmptyState message="出荷の記録がありません。" />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-base">
+            <table className="w-full min-w-200 text-left text-base">
               <thead>
                 <tr className="border-b border-line-soft text-sm text-fg-muted">
                   <th className="px-6 py-3 sm:px-7">出荷日</th>
